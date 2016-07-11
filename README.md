@@ -1,4 +1,3 @@
 # multiple-shooting-method
-Git for Programming exercise exam thing
+Git for programming exercise exam
 
-testing if git works
