@@ -32,6 +32,7 @@ for i=1:(m)
     interval=[interval; erg_temp.T];
 end
 final_erg=discreteFunctionLinearInterpolation(interval, val);
+valMat=cell2mat(val);
 
 
 %plot Solution, this will break if d != 2

@@ -46,7 +46,6 @@ df_times_U=@fermi_df_times_U
 
 %Initial Value Problem Solver + number of steps
 ivpSolver = @explicitEuler
-ivpSolverVariationEquation = @explicitEulerForVariationEquation
 steps=300
 
 % stopping_cond

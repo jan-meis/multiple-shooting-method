@@ -2,7 +2,6 @@ function [ y ] = DF(v, d, m, t, steps)
 f = evalin('base', 'f');
 df_times_U = evalin('base', 'df_times_U');
 ivpSolver = evalin('base', 'ivpSolver');
-ivpSolverVariationEquation = evalin('base', 'ivpSolverVariationEquation');
 r = evalin('base', 'r');
 B_a_temp= evalin('base', 'B_a');
 B_b_temp= evalin('base', 'B_b');
