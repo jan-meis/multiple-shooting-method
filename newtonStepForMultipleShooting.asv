@@ -1,0 +1,9 @@
+function [ y ] = newtonStepForMultipleShooting(v, d, r, m, t)
+temp_1=F(v, d, r, m, t)
+temp_2= DF(v, d, m, t)
+temp_3=( DF(v, d, m, t) )^(-1)
+temp_4=temp_3*temp_1
+y= v - (( ( DF(v, d, m, t) )^(-1))*F(v, d, r, m, t));
+
+end
+

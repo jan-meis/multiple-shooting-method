@@ -1,11 +1,12 @@
 function [ y ] = DF(v, d, m, t)
 
-B_a = sign(v(1,1))*diag(v( (1-1)*d+1:1*d, 1) );
+%B_a = sign(v(1,1))*diag(v( (1-1)*d+1:1*d, 1) );
 %vielleicht B_a(2,2)=0;
+B_a=[1, 0; 0, 0];
 
-B_b = sign(v( (m+1-1)*d+1, 1))*diag(v( (m+1-1)*d+1:(m+1)*d, 1));
+%B_b = sign(v( (m+1-1)*d+1, 1))*diag(v( (m+1-1)*d+1:(m+1)*d, 1));
 %vielleicht B_b(2,2)=0;
-
+B_b=[0, 0; 1, 0];
 
 y=zeros((m+1)*d, (m+1)*d);
 

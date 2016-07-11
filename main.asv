@@ -34,7 +34,7 @@ end;
 
 val={};
 interval=[];
-for i=1:(m)
+for i=1:(m-1)
     erg_temp= explicitEulerOrder1(t(1, i), t(1, i+1), v( (i-1)*d+1:i*d, 1), @fermi_f, 200);
     
     val=[val, erg_temp.y];
@@ -46,14 +46,11 @@ x=[];
 y=[];
 z=[];
 final_erg=discreteFunctionLinearInterpolation(interval, val);
-for i=1:2010
+for i=1:1809
     x=[x, val{1, i}(1, 1)];
     y=[y, val{1, i}(2, 1)];
-    z=[z, interval(i, 1)];
+    z=interval(i, 1);
 end
-
-plot3(x,y,z)
-
 
 
 

@@ -18,9 +18,9 @@ t=partitioningMethod(I, m)
 d=2
 
 % v = d * (m+1)  vector
-%v=rand([d*(m+1), 1]);
-v=ones([d*(m+1),1]);
-v(d*(m)+1, 1)=0;
+v=rand([d*(m+1), 1]);
+%v=ones([d*(m+1),1]);
+%v(d*(m)+1, 1)=0;
 %v(1,1)=1;
 %v(d*(m)+1, 1)=0;
 display(v)
