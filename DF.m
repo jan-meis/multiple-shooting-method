@@ -21,8 +21,8 @@ y( (m+1)*d-d+1:(m+1)*d, (m+1)*d-d+1:(m+1)*d) = B_b;
 
 
 for i=1:m
-    u_temp=explicitEulerOrder1(t(1, i), t(1, i+1), v( (i-1)*d+1:i*d, 1), @fermi_f, 200);
-    U_temp=explicitEulerForVariationEquation(t(1, i), t(1, i+1), eye(d), @fermi_df_times_U, u_temp, 200);
+    u_temp=explicitEulerOrder1(t(1, i), t(1, i+1), v( (i-1)*d+1:i*d, 1), @fermi_f, 300);
+    U_temp=explicitEulerForVariationEquation(t(1, i), t(1, i+1), eye(d), @fermi_df_times_U, u_temp, 300);
     y((i-1)*d+1:(i)*d , 1+(i-1)*d:(i)*d )=U_temp.evaluate(t(1, i+1));
 end
 end

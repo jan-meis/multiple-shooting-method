@@ -3,7 +3,6 @@ classdef discreteFunctionLinearInterpolation
     properties
         T=0;
         y=0;
-        d=0;
     end
     
     methods
@@ -23,6 +22,15 @@ classdef discreteFunctionLinearInterpolation
              ret=obj.y{size(obj.T, 1)};
          end
          
+        end
+        
+        function ret=differentiate(obj, t)
+            
+            for i=1:size(obj.T, 1)-1
+                if ((obj.T(i, 1) <= t)&& (t < obj.T(i+1, 1)))
+                    ret=(obj.y{i+1}-obj.y{i})/(obj.T(i+1, 1)- obj.T(i,1));
+                end
+            end
         end
         
         
