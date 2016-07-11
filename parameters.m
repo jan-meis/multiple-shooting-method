@@ -1,5 +1,5 @@
 % m = number of Intervals
-m = 10
+m = 20
 
 % I = interval
 I=[0, 5]
@@ -20,8 +20,9 @@ v=rand([d*(m+1), 1]);
 %nonrandom starting vector:
 %v=ones([d*(m+1),1]);
 %v(d*(m)+1, 1)=0;
-display(v)
+v_initial=v
 %this means v_k is v( (k-1)*d+1:k*d, 1) for k=1,..,m+1
+
 
 
 % r = boundary condition
@@ -40,7 +41,10 @@ df_times_U=@fermi_df_times_U
 
 %Initial Value Problem Solver + number of steps
 ivpSolver = @explicitEuler
-steps=300;
+steps=300
+
+% stopping_cond
+stopping_cond_epsilon=0.0001
 
 
 

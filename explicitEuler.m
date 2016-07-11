@@ -1,4 +1,4 @@
-function [ y ] = explicitEulerOrder1(initial_arg, end_arg, initial_value, f, steps)
+function [ y ] = explicitEuler(initial_arg, end_arg, initial_value, f, steps)
 values{1}=initial_value;
 T=[initial_arg];
 h = (end_arg - initial_arg) / steps;
