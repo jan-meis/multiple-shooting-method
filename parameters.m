@@ -1,5 +1,5 @@
 % m = number of Intervals
-m = 20
+m = 10
 
 % I = interval
 I=[0, 5]
@@ -26,7 +26,12 @@ v_initial=v
 
 
 % r = boundary condition
-r = @fermiBoundaryCondition;
+r = @linearBoundaryValueCondition
+B_a=@fermi_B_a
+B_b=@fermi_B_b
+c=[1;0]
+
+
 
 % f = fermi function
 f = @fermi_f
@@ -41,12 +46,17 @@ df_times_U=@fermi_df_times_U
 
 %Initial Value Problem Solver + number of steps
 ivpSolver = @explicitEuler
+ivpSolverVariationEquation = @explicitEulerForVariationEquation
 steps=300
 
 % stopping_cond
 stopping_cond_epsilon=0.0001
 
 
+
+
+% (bad practice) temporary variable for sharing across workspaces
+temp=0;
 
 
 

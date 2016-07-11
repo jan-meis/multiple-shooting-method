@@ -34,7 +34,7 @@ end
 final_erg=discreteFunctionLinearInterpolation(interval, val);
 
 
-%plot Solution
+%plot Solution, this will break if d != 2
 solutionPlot = figure('Name', 'Solution Plot','NumberTitle','off');
 final_erg.plot3D();
 grid on;
