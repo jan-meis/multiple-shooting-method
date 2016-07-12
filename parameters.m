@@ -12,6 +12,7 @@ partitioningMethod=@equidistantPartitioning
 t=partitioningMethod(I, m)
 %this means t_k = t(1, k+1) for k=0,...,m
 
+%ODE dimension
 d=2
 
 % v = initial guess for v vectors
