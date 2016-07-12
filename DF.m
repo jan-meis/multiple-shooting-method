@@ -23,6 +23,7 @@ y( (m+1)*d-d+1:(m+1)*d, (m+1)*d-d+1:(m+1)*d) = B_b;
 
 
 for i=1:m
+    assignin('base', 'temp_int', i)
     U_temp=ivpSolver(t(1, i), t(1, i+1), eye(d), df_times_U, steps);
     y((i-1)*d+1:(i)*d , 1+(i-1)*d:(i)*d )=U_temp.evaluate(t(1, i+1));
 end

@@ -50,7 +50,7 @@ for i=1:(m)
     interval=[interval; erg_temp.T];
 end
 solution=discreteFunctionLinearInterpolation(interval, val);
-valMat=cell2mat(val);
+v=cell2mat(val);
 
 if (d==2)
     %plot 2D
