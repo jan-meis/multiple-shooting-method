@@ -157,7 +157,7 @@ classdef discreteFunctionLinearInterpolation
             b=[];
             for i=1:size(obj.T, 1)
                 a=[a, obj.y{1, i}(1, 1)];
-                b=[c, obj.T(i, 1)];
+                b=[b, obj.T(i, 1)];
             end
         end
         
@@ -167,8 +167,8 @@ classdef discreteFunctionLinearInterpolation
         end
         
         function [] = plot2D(obj)
-            [a, b] = obj.createGraphValues2D();
-            plot3(a, b);
+            [b, a] = obj.createGraphValues2D();
+            plot(a, b);
         end
         
         

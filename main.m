@@ -10,10 +10,11 @@ addpath(genpath(pwd))
 
 %initialize parameters specific to problem
 parameters
+%parameters_1_d_example
 
 
-tic
 %Newton steps
+tic
 iter_count=0;
 
 
@@ -29,20 +30,21 @@ while not(stopNewton(stopping_cond_epsilon, ivpSolver, f, v, d, m, r, t))
     v=newtonStepForMultipleShooting(v, d, r, m, t, steps);
     iter_count=iter_count+1;
     
-temp_sol={};
-for i=1:(m)
-    erg_temp= ivpSolver(t(1, i), t(1, i+1), v( (i-1)*d+1:i*d, 1), f, steps);
-    temp_sol=[temp_sol; erg_temp];
-end
+    temp_sol={};
+    for i=1:(m)
+        erg_temp= ivpSolver(t(1, i), t(1, i+1), v( (i-1)*d+1:i*d, 1), f, steps);
+        temp_sol=[temp_sol; erg_temp];
+    end
     assignin('base', 'temp_sol', temp_sol)
     
 end
 display(v)
 display(iter_count)
+'Newton method took:'
 toc
 
-%use our calculated v to assign assign a discrete solution function to
-%solution
+
+%patch together calculated values to create solution Function
 val={};
 interval=[];
 for i=1:(m)
@@ -91,6 +93,26 @@ end
 
 if (d==1)
     %plot 1D
+    
+    solutionPlot = figure('Name', 'Solution Plot','NumberTitle','off');
+    solution.plot2D();
+    grid on;
+    xlabel('t');
+    ylabel('y');
+    
+    axis auto;
+    a = axis;
+    amax = max(abs(a));
+    axis([-amax,amax,-amax,amax]);
+    hold on
+    cordSysX=[-amax, amax ];
+    cordSysY=[0,0];
+    plot(cordSysX, cordSysY, 'k');
+    
+    hold on
+    cordSysX=[0,0];
+    cordSysY=[-amax, amax ];
+    plot(cordSysX, cordSysY, 'k');
     
 end
 

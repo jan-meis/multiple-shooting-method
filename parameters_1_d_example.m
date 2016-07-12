@@ -2,7 +2,7 @@
 m = 10
 
 % I = interval
-I=[0, 5]
+I=[0, 2]
 
 % partitioningMethod self explanatory
 partitioningMethod=@equidistantPartitioning
@@ -13,7 +13,7 @@ t=partitioningMethod(I, m)
 %this means t_k = t(1, k+1) for k=0,...,m
 
 %ODE dimension
-d=2
+d=1
 
 % v = initial guess for v vectors
 
@@ -28,18 +28,18 @@ v_initial=v
 
 % r = boundary condition
 r = @linearBoundaryValueCondition
-B_a=@fermi_B_a
-B_b=@fermi_B_b
-c=[1;0]
+B_a=@one_dim_example_B_a
+B_b=@one_dim_example_B_b
+c=1;
 
 
 
-% f = fermi function
-f = @fermi_f
+% f = u' = u^2
+f = @one_dim_example_f
 
 
 % df_times_U
-df_times_U=@fermi_df_times_U
+df_times_U=@one_dim_example_df_times_U
 
 
 %Initial Value Problem Solver + number of steps
