@@ -12,7 +12,7 @@ addpath(genpath(pwd))
 parameters
 
 
-
+tic
 %Newton steps
 iter_count=0;
 
@@ -22,7 +22,7 @@ for i=1:(m)
     erg_temp= ivpSolver(t(1, i), t(1, i+1), v( (i-1)*d+1:i*d, 1), f, steps);
     temp_sol=[temp_sol; erg_temp];
 end
-
+v( (m+1-1)*d+1:(m+1)*d, 1)=temp_sol(m).evaluate(t(1, m+1));
 
 
 while not(stopNewton(stopping_cond_epsilon, ivpSolver, f, v, d, m, r, t))
@@ -39,15 +39,21 @@ end
 end
 display(v)
 display(iter_count)
+toc
 
 %use our calculated v to assign assign a discrete solution function to
 %solution
 val={};
 interval=[];
 for i=1:(m)
-    erg_temp= ivpSolver(t(1, i), t(1, i+1), v( (i-1)*d+1:i*d, 1), f, steps);
-    val=[val, erg_temp.y];
-    interval=[interval; erg_temp.T];
+    if (i==1)
+        val=[val, temp_sol(i).y];
+        interval=[interval; temp_sol(i).T];
+    else
+        val=[val, temp_sol(i).y{2:end}];
+        interval=[interval; temp_sol(i).T(2:end)];
+        
+    end
 end
 solution=discreteFunctionLinearInterpolation(interval, val);
 valMat=cell2mat(val);

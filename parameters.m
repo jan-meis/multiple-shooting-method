@@ -47,7 +47,7 @@ df_times_U=@fermi_df_times_U
 
 %Initial Value Problem Solver + number of steps
 ivpSolver = @explicitEuler
-steps=300
+steps=200
 
 % stopping_cond
 stopping_cond_epsilon=0.0001
