@@ -9,35 +9,54 @@ addpath(genpath(pwd))
 %******   main   ******%
 
 %initialize parameters specific to problem
-parameters
+parameters_fermi
 %parameters_1_d_example
+%parameters_generic
 
 
 %Newton steps
 tic
-iter_count=0;
 
 
-temp_sol={};
-for i=1:(m)
-    erg_temp= ivpSolver(t(1, i), t(1, i+1), v( (i-1)*d+1:i*d, 1), f, steps);
-    temp_sol=[temp_sol; erg_temp];
-end
-v( (m+1-1)*d+1:(m+1)*d, 1)=temp_sol(m).evaluate(t(1, m+1));
-
-
-while not(stopNewton(stopping_cond_epsilon, ivpSolver, f, v, d, m, r, t))
-    v=newtonStepForMultipleShooting(v, d, r, m, t, steps);
-    iter_count=iter_count+1;
+while(newtonNoConvergenceErrorHandling)
+    newtonNoConvergenceErrorHandling=false;
     
+    iter_count=0;
     temp_sol={};
     for i=1:(m)
         erg_temp= ivpSolver(t(1, i), t(1, i+1), v( (i-1)*d+1:i*d, 1), f, steps);
         temp_sol=[temp_sol; erg_temp];
     end
-    assignin('base', 'temp_sol', temp_sol)
+    v( (m+1-1)*d+1:(m+1)*d, 1)=temp_sol(m).evaluate(t(1, m+1));
+    v_m_plus_one=v( (m+1-1)*d+1:(m+1)*d, 1);
+    
+    while not(stopNewton(stopping_cond_epsilon, ivpSolver, f, v, d, m, r, t))
+        v=newtonStepForMultipleShooting(v, d, r, m, t, steps);
+        iter_count=iter_count+1;
+        v_1=v( (1-1)*d+1:1*d, 1);
+        v_m_plus_one=v( (m+1-1)*d+1:(m+1)*d, 1);
+        
+        if (iter_count > newton_does_not_seem_to_converge)
+            'Newton method does not seem to converge, doubleing stepsize and choosing different starting vector now'
+            steps=2*steps;
+            v=rand([d*(m+1), 1])*2;
+            newtonNoConvergenceErrorHandling=true;
+            break;
+        end
+        
+        
+        temp_sol={};
+        for i=1:(m)
+            erg_temp= ivpSolver(t(1, i), t(1, i+1), v( (i-1)*d+1:i*d, 1), f, steps);
+            temp_sol=[temp_sol; erg_temp];
+        end
+
+        
+    end
     
 end
+
+
 display(v)
 display(iter_count)
 'Newton method took:'
@@ -48,12 +67,12 @@ toc
 val={};
 interval=[];
 for i=1:(m)
-    if (i==1)
+    if (i==m)
         val=[val, temp_sol(i).y];
         interval=[interval; temp_sol(i).T];
     else
-        val=[val, temp_sol(i).y{2:end}];
-        interval=[interval; temp_sol(i).T(2:end)];
+        val=[val, temp_sol(i).y{1:end-1}];
+        interval=[interval; temp_sol(i).T(1:end-1)];
         
     end
 end
@@ -114,6 +133,31 @@ if (d==1)
     cordSysY=[-amax, amax ];
     plot(cordSysX, cordSysY, 'k');
     
+end
+
+if (d > 2)
+    for i=1:d
+    solutionPlot = figure('Name', strcat('Solution Plot Dim ', num2str(i)),'NumberTitle','off');
+    solution.plotiD(i);
+    grid on;
+    xlabel('t');
+    ylabel('y');
+    
+    axis auto;
+    a = axis;
+    amax = max(abs(a));
+    axis([-amax,amax,-amax,amax]);
+    hold on
+    cordSysX=[-amax, amax ];
+    cordSysY=[0,0];
+    plot(cordSysX, cordSysY, 'k');
+    
+    hold on
+    cordSysX=[0,0];
+    cordSysY=[-amax, amax ];
+    plot(cordSysX, cordSysY, 'k');
+    
+    end
 end
 
 

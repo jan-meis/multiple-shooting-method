@@ -10,9 +10,12 @@ end
 
 if (max > epsilon)
     y=false;
+elseif (isnan(max))
+    y=false;
 else
     y=true;
 end
+
 
 end
 

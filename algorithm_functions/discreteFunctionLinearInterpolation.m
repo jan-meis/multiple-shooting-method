@@ -176,6 +176,24 @@ classdef discreteFunctionLinearInterpolation
             y=obj.y{size(obj.T, 1)};
         end
         
+        function [a, b] = createGraphValuesiD(obj, dim)
+            a=[];
+            b=[];
+            for i=1:size(obj.T, 1)
+                a=[a, obj.y{1, i}(dim, 1)];
+                b=[b, obj.T(i, 1)];
+            end
+        end
+        
+        function [] = plotiD(obj, dim)
+            [b, a] = obj.createGraphValuesiD(dim);
+            plot(a, b);
+        end
+        
+
+        
+
+        
         
         
     end
