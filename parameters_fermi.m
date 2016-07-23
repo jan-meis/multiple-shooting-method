@@ -19,8 +19,9 @@ d=2
 
 %v=rand([d*(m+1), 1]);
 %nonrandom starting vector:
-v=ones([d*(m+1),1]);
-v(d*(m)+1, 1)=0;
+v=zeros([d*(m+1),1]);
+%v(1,1)=-1;
+%v(d*(m)+1, 1)=0;
 v_initial=v
 %this means v_k is v( (k-1)*d+1:k*d, 1) for k=1,..,m+1
 v_1=v( (1-1)*d+1:1*d, 1);
@@ -45,7 +46,7 @@ df_times_U=@fermi_df_times_U
 
 %Initial Value Problem Solver + number of steps
 ivpSolver = @explicitEuler
-steps=300
+steps=30
 
 % stopping_cond && non converg threshold
 stopping_cond_epsilon=0.0001
@@ -59,6 +60,7 @@ newtonNoConvergenceErrorHandling=true;
 temp_sol={};
 temp_int=0;
 
+stopNewtonBool=false;
 
 
 
