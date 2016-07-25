@@ -33,6 +33,8 @@ B_a=@generic_B_a
 B_b=@generic_B_b
 
 
+
+
 % f = fermi function
 f = @high_d_example_f
 
@@ -43,8 +45,8 @@ df_times_U=@generic_df_times_U
 
 %Initial Value Problem Solver + number of steps
 ivpSolver = @explicitEuler
-steps=100
-numerical_dif_const=0.1;
+steps=70
+numerical_dif_const=0.001;
 
 % stopping_cond && non converg threshold
 stopping_cond_epsilon=0.0001
@@ -52,15 +54,8 @@ newton_does_not_seem_to_converge = 30;
 newtonNoConvergenceErrorHandling=true;
 
 
-
-
 % (bad practice) temporary variable for sharing across workspaces
 temp_sol={};
 temp_int=0;
-
+v_container=[];
 stopNewtonBool=false;
-
-
-
-
- 

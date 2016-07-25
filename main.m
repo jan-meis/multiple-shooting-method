@@ -6,6 +6,7 @@ close all
 addpath(genpath(pwd))
 
 
+
 %******   main   ******%
 
 %initialize parameters specific to problem
@@ -14,41 +15,53 @@ parameters_fermi
 %parameters_generic
 
 
+
 %Newton steps
 tic
 
-
 while(newtonNoConvergenceErrorHandling)
+    %when iter_count gets too high, newton method will be repeated with
+    %different parameters
     newtonNoConvergenceErrorHandling=false;
-    
     iter_count=0;
+    
+    
+    
+    %approximation for solution with initial guess for v
     temp_sol={};
     for i=1:(m)
         erg_temp= ivpSolver(t(1, i), t(1, i+1), v( (i-1)*d+1:i*d, 1), f, steps);
         temp_sol=[temp_sol; erg_temp];
     end
-    
     v( (m+1-1)*d+1:(m+1)*d, 1)=temp_sol(m).evaluate(t(1, m+1));
     v_m_plus_one=v( (m+1-1)*d+1:(m+1)*d, 1);
-   
+    v_cont=[v];
     
+    
+    %***** main loop ****%
     while not(stopNewtonBool)
+        if (size(v_cont, 2) > 3)
+            temp_numerator=abs(norm(v_cont(:, size(v_cont, 2))-v_cont(:, size(v_cont, 2)-1))/norm(v_cont(:, size(v_cont, 2)-1)-v_cont(:, size(v_cont, 2)-2)));
+            temp_denominator=abs(norm(v_cont(:, size(v_cont, 2)-1)-v_cont(:, size(v_cont, 2)-2))/norm(v_cont(:, size(v_cont, 2)-2)-v_cont(:, size(v_cont, 2)-3)));
+            display('current convergence order estimate:')
+            alpha_estimate=log(temp_numerator)/log(temp_denominator)
+        end
+        
         v=newtonStepForMultipleShooting(v, d, r, m, t, steps);
         iter_count=iter_count+1;
         v_1=v( (1-1)*d+1:1*d, 1);
         v_m_plus_one=v( (m+1-1)*d+1:(m+1)*d, 1);
+        v_cont=[v_cont, v];
         
+
         if (iter_count > newton_does_not_seem_to_converge)
-            'Newton method does not seem to converge, doubleing stepsize and choosing different starting vector now'
+            %change starting conditions and try again
+            display('Newton method does not seem to converge, doubleing steps and choosing different starting vector now')
             steps=2*steps;
-            v=rand([d*(m+1), 1])*2;
+            v=rand([d*(m+1), 1]);
             newtonNoConvergenceErrorHandling=true;
             break;
         end
-        
-        
-
-        
     end
     
 end
@@ -56,11 +69,11 @@ end
 
 display(v)
 display(iter_count)
-'Newton method took:'
+display('Newtons method took:')
 toc
 
 
-
+%recalculate solution functions with higher number of steps
 temp_sol={};
 for i=1:(m)
     erg_temp= ivpSolver(t(1, i), t(1, i+1), v( (i-1)*d+1:i*d, 1), f, steps*2);
@@ -84,6 +97,7 @@ end
 solution=discreteFunctionLinearInterpolation(interval, val);
 valMat=cell2mat(val);
 difMat=cell2mat(solution.y_dif);
+
 
 if (d==2)
     %plot 2D
@@ -142,6 +156,7 @@ if (d==1)
 end
 
 if (d > 2)
+    %plot d Dimensions
     for i=1:d
     solutionPlot = figure('Name', strcat('Solution Plot Dim ', num2str(i)),'NumberTitle','off');
     solution.plotiD(i);
@@ -180,11 +195,4 @@ avg_error = norm(approx_error)/length(approx_error)
 
 errorPlot = figure('Name', 'Error Plot', 'NumberTitle','off');
 plot(approx_error);
-
-
-
-
-
-
-
 

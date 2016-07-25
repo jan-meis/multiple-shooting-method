@@ -190,9 +190,9 @@ classdef discreteFunctionLinearInterpolation
             plot(a, b);
         end
         
-
         
-
+        
+        
         
         
         
